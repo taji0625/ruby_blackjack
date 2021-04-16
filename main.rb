@@ -14,15 +14,7 @@ mk.each do |mark|
 end
 deck.shuffle!
 
-
 POSSESSION_MONEY = 10000
-
-
-
-
-
-
-
 
 # ディーラーインスタンスの生成
 dealer = Dealer.new()
@@ -48,7 +40,13 @@ while true
   when 1 then
     # カードのヒット
     new_player_hand = player.hit(deck, player_hand)
-    calculation(new_player_hand)
+    calc_number_sum = calculation(new_player_hand)
+    if calc_number_sum >= 22
+      puts ""
+      puts "バースト！！"
+      puts ""
+      break
+    end
   when 2 then
     # スタンド
     player.stand(player_hand)
@@ -56,3 +54,6 @@ while true
     break
   end
 end
+
+
+

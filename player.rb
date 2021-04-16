@@ -74,19 +74,24 @@ class Player
   def hit(deck, player_hand)
     card = deck.shift
     player_hand.push(card)
-    player_hand.each_with_index |p_hand, i|
-      p_hand[i]
+    puts <<-EOS
+    ---------------------
+    あなたのカード
+    EOS
+    player_hand.each_with_index do |p_hand, i|
       puts <<-EOS
-
-      カードを一枚ヒット！
-
-      ----------------------
-      あなたのカード
-      [#{p_card[i].show}]
-      ----------------------
-
+        [#{p_hand.mark}の#{p_hand.number}]
       EOS
     end
+    puts <<-EOS
+    ---------------------
+    EOS
     return player_hand
+  end
+
+  def stand(player_hand)
+    puts ""
+    puts "スタンド！！"
+    puts ""
   end
 end
