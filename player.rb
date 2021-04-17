@@ -1,4 +1,5 @@
 class Player
+  attr_accessor :tip
   def initialize(tip)
     @tip = tip
   end
@@ -21,9 +22,15 @@ class Player
       break if bet <= @tip
       puts "所持金以下で入力してください！"
     end
-    puts ""
-    puts "#{bet}円を掛けます。"
-    puts ""
+    if bet == @tip
+      puts ""
+      puts "オールイン！！！"
+      puts ""
+    else
+      puts ""
+      puts "#{bet}円を掛けます。"
+      puts ""
+    end
     return bet
   end
 
@@ -41,8 +48,8 @@ class Player
 
     ---------------------
     あなたのカード
-    [#{open_card1.show}]
-    [#{open_card2.show}]
+    [#{open_card1.mark}の#{open_card1.number}]
+    [#{open_card2.mark}の#{open_card2.number}]
     ---------------------
 
     EOS
@@ -75,6 +82,8 @@ class Player
     card = deck.shift
     player_hand.push(card)
     puts <<-EOS
+    カードを1枚ヒット！！
+
     ---------------------
     あなたのカード
     EOS
