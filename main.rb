@@ -3,16 +3,7 @@ require './dealer'
 require './player'
 require './calculation'
 
-# デッキの生成
-deck = [];
-mk = ["♠️", "♡", "♦︎", "♣︎"];
-num = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q" ,"K"];
-mk.each do |mark|
-  num.each do |number|
-    deck << Deck.new(mark, number)
-  end
-end
-deck.shuffle!
+
 
 # プレイヤーの所持金
 POSSESSION_MONEY = 10000
@@ -26,6 +17,18 @@ dealer = Dealer.new()
 player = Player.new(tip)
 
 loop do
+  # デッキの生成
+  deck = [];
+  mk = ["♠️", "♡", "♦︎", "♣︎"];
+  num = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q" ,"K"];
+  mk.each do |mark|
+    num.each do |number|
+      deck << Deck.new(mark, number)
+    end
+  end
+  deck.shuffle!
+
+
   # プレイヤーが掛け金を決める
   bet = player.decide_premium()
 
@@ -34,6 +37,9 @@ loop do
 
   # プレイヤーにカードが配られる
   player_hand = player.player_card_distribute(deck)
+
+  # ブラックジャックか判定
+  is_blackjack = player.is_blackjack?(player_hand)
 
   # プレイヤーのカードの合計値の計算
   player_calc_number_sum = calculation(player_hand)
@@ -47,6 +53,7 @@ loop do
       # カードのヒット
       new_player_hand = player.hit(deck, player_hand)
 
+
       # プレイヤーのカードの合計値の計算
       player_calc_number_sum = calculation(new_player_hand)
       if player_calc_number_sum >= 22
@@ -54,8 +61,7 @@ loop do
         puts "バースト！！"
         puts ""
         puts "あなたの負け..."
-        puts "所持金を#{bet}円を失った。"
-        player.tip -= bet
+        puts "掛け金を#{bet}円を失った。"
         puts "あなたの所持金、残り#{player.tip}円"
         break
       end
@@ -80,25 +86,37 @@ loop do
           if dealer_calc_number_sum >= 17 && dealer_calc_number_sum <= 21
 
             # 勝敗判定
-            win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet)
+            win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet, is_blackjack)
             break
           end
 
           if dealer_calc_number_sum >= 22
-            puts ""
-            puts "ディーラーはバースト！！"
-            puts "あなたの勝ち！！"
-            puts "所持金が#{bet}円増えた！！"
-            player.tip += bet
-            puts "あなたの所持金、残り#{player.tip}円"
-            puts ""
-            break
+            if is_blackjack === false
+              puts ""
+              puts "ディーラーはバースト！！"
+              puts "あなたの勝ち！！"
+              puts "所持金が#{bet * 2}円増えた！！"
+              player.tip += bet * 2
+              puts "あなたの所持金、残り#{player.tip}円"
+              puts ""
+              break
+            else
+              puts ""
+              puts "ディーラーはバースト！！"
+              puts "あなたの勝ち！！"
+              puts "ブラックジャックなので、リターンは2.5倍になります！"
+              puts "所持金が#{bet * 2.5}円増えた！！"
+              player.tip += bet * 2.5
+              puts "あなたの所持金、残り#{player.tip}円"
+              puts ""
+              break
+            end
           end
         end
         break
       else
         # 勝敗判定
-        win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet)
+        win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet, is_blackjack)
         break
       end
     end
@@ -124,10 +142,9 @@ loop do
 
     EOS
 
-
     print "数字を入力 > "
     continue_number = gets.to_i
-    break if (1..2).include?(selection_number)
+    break if (1..2).include?(continue_number)
     puts ""
     puts "1か2の番号を入力して下さい！"
   end

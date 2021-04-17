@@ -19,16 +19,19 @@ class Player
       EOS
       print "掛け金を入力 > "
       bet = gets.to_i
-      break if bet <= @tip
+      break if bet.to_i <= @tip
       puts "所持金以下で入力してください！"
     end
+    @tip -= bet
     if bet == @tip
       puts ""
       puts "オールイン！！！"
+      puts "あなたの所持金、残り#{@tip}円"
       puts ""
     else
       puts ""
       puts "#{bet}円を掛けます。"
+      puts "あなたの所持金、残り#{@tip}円"
       puts ""
     end
     return bet
@@ -55,6 +58,19 @@ class Player
     EOS
 
     return player_hand
+  end
+
+  # ブラックジャックか判定
+  def is_blackjack?(player_hand)
+    if player_hand[0].number === "A" || player_hand[1].number === "A"
+      if player_hand[0].number === "10" || player_hand[1].number === "10" ||
+      player_hand[0].number === "J" || player_hand[1].number === "J" ||
+      player_hand[0].number === "Q" || player_hand[1].number === "Q" ||
+      player_hand[0].number === "K" || player_hand[1].number === "K"
+        return true
+      end
+    end
+    return false
   end
 
   # ヒットかスタンドを選択

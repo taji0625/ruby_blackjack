@@ -33,19 +33,29 @@ def calculation(cards)
 end
 
 # 勝敗判定
-def win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet)
+def win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum, bet, is_blackjack)
   if player_calc_number_sum > dealer_calc_number_sum
-    puts ""
-    puts "あなたの勝ち！！"
-    puts "所持金が#{bet}円増えた！！"
-    player.tip += bet
-    puts "あなたの所持金、残り#{player.tip}円"
-    puts ""
+    if is_blackjack === false
+      puts ""
+      puts "あなたの勝ち！！"
+      puts "所持金が#{bet * 2}円増えた！！"
+      player.tip += bet * 2
+      puts "あなたの所持金、残り#{player.tip}円"
+      puts ""
+    else
+      puts ""
+      puts "ブラックジャック！！"
+      puts "あなたの勝ち！！"
+      puts "ブラックジャックで勝ったため、リターンは2.5倍になります！"
+      puts "所持金が#{bet * 2.5}円増えた！！"
+      player.tip += bet * 2.5
+      puts "あなたの所持金、残り#{player.tip}円"
+      puts ""
+    end
   elsif player_calc_number_sum < dealer_calc_number_sum
     puts ""
     puts "あなたの負け..."
-    puts "所持金を#{bet}円を失った。"
-    player.tip -= bet
+    puts "掛け金#{bet}円を失った。"
     puts "あなたの所持金、残り#{player.tip}円"
     puts ""
   else
