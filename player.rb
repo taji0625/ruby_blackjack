@@ -11,7 +11,7 @@ class Player
 
       --------------------------
       ブラックジャックを始めます。
-      あなたは#{@tip}円持っています。
+      あなたは#{@tip.floor}円持っています。
       いくら掛けますか？
       掛け金を決めてください。
       --------------------------
@@ -19,19 +19,20 @@ class Player
       EOS
       print "掛け金を入力 > "
       bet = gets.to_i
-      break if bet.to_i <= @tip
-      puts "所持金以下で入力してください！"
+      break if bet <= @tip && bet >= 1
+      puts "1円以上、且つ所持金以下で入力してください！"
     end
-    @tip -= bet
-    if bet == @tip
+    if bet === @tip
       puts ""
       puts "オールイン！！！"
-      puts "あなたの所持金、残り#{@tip}円"
+      @tip -= bet
+      puts "あなたの所持金、残り#{@tip.floor}円"
       puts ""
     else
       puts ""
       puts "#{bet}円を掛けます。"
-      puts "あなたの所持金、残り#{@tip}円"
+      @tip -= bet
+      puts "あなたの所持金、残り#{@tip.floor}円"
       puts ""
     end
     return bet

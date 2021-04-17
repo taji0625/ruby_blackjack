@@ -62,7 +62,7 @@ loop do
         puts ""
         puts "あなたの負け..."
         puts "掛け金を#{bet}円を失った。"
-        puts "あなたの所持金、残り#{player.tip}円"
+        puts "あなたの所持金、残り#{player.tip.floor}円"
         break
       end
     when 2 then
@@ -97,7 +97,7 @@ loop do
               puts "あなたの勝ち！！"
               puts "所持金が#{bet * 2}円増えた！！"
               player.tip += bet * 2
-              puts "あなたの所持金、残り#{player.tip}円"
+              puts "あなたの所持金、残り#{player.tip.floor}円"
               puts ""
               break
             else
@@ -105,9 +105,9 @@ loop do
               puts "ディーラーはバースト！！"
               puts "あなたの勝ち！！"
               puts "ブラックジャックなので、リターンは2.5倍になります！"
-              puts "所持金が#{bet * 2.5}円増えた！！"
+              puts "所持金が#{(bet * 2.5).floor}円増えた！！"
               player.tip += bet * 2.5
-              puts "あなたの所持金、残り#{player.tip}円"
+              puts "あなたの所持金、残り#{player.tip.floor}円"
               puts ""
               break
             end

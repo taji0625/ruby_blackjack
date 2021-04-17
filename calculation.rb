@@ -40,28 +40,30 @@ def win_or_loss_decision(player, player_calc_number_sum, dealer_calc_number_sum,
       puts "あなたの勝ち！！"
       puts "所持金が#{bet * 2}円増えた！！"
       player.tip += bet * 2
-      puts "あなたの所持金、残り#{player.tip}円"
+      puts "あなたの所持金、残り#{player.tip.floor}円"
       puts ""
     else
       puts ""
       puts "ブラックジャック！！"
       puts "あなたの勝ち！！"
       puts "ブラックジャックで勝ったため、リターンは2.5倍になります！"
-      puts "所持金が#{bet * 2.5}円増えた！！"
+      puts "所持金が#{(bet * 2.5).floor}円増えた！！"
       player.tip += bet * 2.5
-      puts "あなたの所持金、残り#{player.tip}円"
+      puts "あなたの所持金、残り#{player.tip.floor}円"
       puts ""
     end
   elsif player_calc_number_sum < dealer_calc_number_sum
     puts ""
     puts "あなたの負け..."
     puts "掛け金#{bet}円を失った。"
-    puts "あなたの所持金、残り#{player.tip}円"
+    puts "あなたの所持金、残り#{player.tip.floor}円"
     puts ""
   else
     puts ""
     puts "引き分け！"
-    puts "あなたの所持金、残り#{player.tip}円"
+    puts "掛け金#{bet}円が返ってきた。"
+    player.tip += bet
+    puts "あなたの所持金、残り#{player.tip.floor}円"
     puts ""
   end
 end
